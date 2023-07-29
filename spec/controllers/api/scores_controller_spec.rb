@@ -28,9 +28,13 @@ describe Api::ScoresController, type: :request do
     end
 
     it 'should display maximum of 25 scores' do
+      (1..30).each do |i|
+        create(:score, user: @user1, total_score: 100 - i,
+                       played_at: "2021-06-#{i.to_s.rjust(2, '0')}")
+      end
       get '/api/feed', as: :json
       json_response = JSON.parse(response.body)
-      expect(json_response.length).to be <= 25
+      expect(json_response['scores'].length).to be <= 25
     end
   end
 
