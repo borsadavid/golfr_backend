@@ -26,6 +26,12 @@ describe Api::ScoresController, type: :request do
       expect(scores[1]['total_score']).to eq 68
       expect(scores[2]['total_score']).to eq 79
     end
+
+    it 'should display maximum of 25 scores' do
+      get '/api/feed', as: :json
+      json_response = JSON.parse(response.body)
+      expect(json_response.length).to be <= 25
+    end
   end
 
   describe 'POST create' do
